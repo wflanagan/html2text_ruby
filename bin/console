@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require 'irb'
+require 'http'
+require File.expand_path(File.join(__dir__, '..', 'lib', 'html2text'))
+
+class Html2Text
+  module Get
+    class << self
+      def url(url, args = {})
+        escaped_url = URI.escape(url)
+        response = HTTP
+          .headers("User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+          .get(url)
+        response
+      end
+    end
+  end
+
+  module Parse
+    class << self
+      def url(url, args = {})
+        resp = ::Html2Text::Get.url(url, args)
+        ::Html2Text.convert(resp.body.to_s)
+      end
+    end
+  end
+end
+
+IRB.start(__FILE__)

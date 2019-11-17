@@ -1,3 +1,3 @@
-class Html2Text
-  VERSION = "0.3.1"
+module Html2Text
+  VERSION = "0.4.0"
 end
