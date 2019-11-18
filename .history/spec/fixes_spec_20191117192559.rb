@@ -1,9 +1,4 @@
-require "spec_helper"
-
-def load_file_from_fixture_path(filename)
-  full_filename = File.expand_path(File.join(__dir__, 'fixtures', filename))
-  File.read(full_filename)
-end
+# frozen_string_literal: true
 
 RSpec.describe "fixes" do
   let(:parser) { Html2Text.convert(html) }

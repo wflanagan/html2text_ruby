@@ -3,7 +3,7 @@
 module Html2Text
   module Parsers
     # Parses an a link node, returning the supplied output including the text
-    class ImageNode
+    class ImageNode < Base
       include Html2Text::Parsers::Concerns::NodeUtils
       attr_reader :args
 
