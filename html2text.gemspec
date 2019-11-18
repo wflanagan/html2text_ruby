@@ -18,10 +18,8 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "nokogiri"
-  s.add_dependency "json-ld"
   s.add_dependency "activesupport"
-  s.add_dependency "rdf-microdata"
-  s.add_dependency "microdata"
+  s.add_dependency "chronic"
 
   s.add_development_dependency "rspec"
   s.add_development_dependency "rspec-collection_matchers"

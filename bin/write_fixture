@@ -33,7 +33,7 @@ unless ARGV.length == 2
 else
   resp = Html2Text::Get.url(ARGV[0])
   if resp.code == 200
-    file_path = File.expand_path(File.join(__dir__, '..', 'spec', 'examples', ARGV[1]))
+    file_path = File.expand_path(File.join(__dir__, '..', 'spec', 'fixtures', 'html', ARGV[1]))
     File.open(file_path, 'w') { |f| f.puts resp.body.to_s }
     puts "Wrote #{resp.body.to_s.length} bytes to #{file_path}."
   else

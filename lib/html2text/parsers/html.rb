@@ -84,7 +84,7 @@ module Html2Text
       #
       # @return [String] the html document or ""
       def formatted_html
-        @formatted_html ||= Html2Text::HtmlFormatter.new(html: html).call
+        @formatted_html ||= Html2Text::Formatters::Html.new(html: html).call
       end
 
       # Produces a Nokogiri object from the formatted text

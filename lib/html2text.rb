@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 require 'active_support/all'
-require 'html2text/utils'
+require 'chronic'
 require 'htmlentities'
 require 'json'
-require 'json/ld'
 require 'nokogiri'
-require 'microdata'
 
-require 'html2text/html_formatter'
+require 'html2text/version'
+require 'html2text/utils'
+require 'html2text/formatters/html'
+require 'html2text/microformatters/microformat_base'
+require 'html2text/microformatters/media_object'
+require 'html2text/microformatters/image_object'
+require 'html2text/microformatters/video_object'
+require 'html2text/microformatters/audio_object'
 require 'html2text/parsers/concerns/node_utils'
 require 'html2text/parsers/concerns/base_accessors'
 require 'html2text/parsers/node_parser'
@@ -19,7 +24,6 @@ require 'html2text/parsers/html/image_node'
 require 'html2text/parsers/html/title'
 require 'html2text/parsers/html/description'
 require 'html2text/parsers/microformats'
-require 'html2text/version'
 
 # The main modulee for Html2Text. Wraps the parsers
 # and provides a convenicence .convert for backward

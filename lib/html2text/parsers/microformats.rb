@@ -21,20 +21,22 @@ module Html2Text
         @tags ||= doc.xpath('//script[@type="application/ld+json"]')
       end
 
-      # Takes the found json_ld_tags and parses them into hashes by decoding
+      # Takes the found tags and parses them into hashes by decoding
       # the JSON
+      #
+      # @return [Array] array of Hashes
       def objects
         @objects ||= begin
-          json_ld_objects = []
-          json_ld_tags.each do |node|
+          objects = []
+          tags.each do |node|
             object = JSON.parse(node.content)
             if object.is_a?(Hash)
-              json_ld_objects << object
+              objects << object
             elsif object.is_a?(Array)
-              object.each { |part| json_ld_objects << part }
+              object.each { |part| objects << part }
             end
           end
-          json_ld_objects
+          objects
         end
       end
 
@@ -47,14 +49,12 @@ module Html2Text
         end
       end
 
-      def image_objects
-        @image_objects ||= begin
-
-        end
+      def image_object
+        @image_object ||= Html2Text::Microformatters::ImageObject.new(objects: objects, doc: doc).call
       end
 
-      def reader
-        @reader ||= Microdata::Document.new(doc.to_html, nil)
+      def video_object
+        @video_object ||= Html2Text::Microformatters::VideoObject.new(objects: objects, doc: doc).call
       end
     end
   end
