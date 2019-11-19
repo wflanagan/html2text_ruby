@@ -97,6 +97,13 @@ module Html2Text
           node.parent.text.strip == node.text.strip
         end
 
+        # Returns true if the node is a header
+        #
+        # @return [Boolean] true or false
+        def node_header?(node)
+          %w[h1 h2 h3 h4 h5 h6].include?(node.name.downcase)
+        end
+
         # Iterates over a set of matchers, and then
         # returns the final result set extracted from
         # the document.

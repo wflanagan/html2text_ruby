@@ -22,6 +22,10 @@ module Html2Text
       def url
         @url ||= args.dig(:url)
       end
+
+      def opts
+        @opts ||= args.dig(:opts) || {}
+      end
     end
   end
 end

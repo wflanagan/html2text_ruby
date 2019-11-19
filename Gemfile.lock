@@ -4,6 +4,13 @@ GIT
   specs:
     htmlentities (4.3.6)
 
+GIT
+  remote: https://github.com/omalab/pragmatic_segmenter.git
+  revision: bb59de8e46e18d2e0bfee074b7d4cacda9612df2
+  specs:
+    pragmatic_segmenter (0.3.22)
+      unicode
+
 PATH
   remote: .
   specs:
@@ -81,6 +88,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
+    unicode (0.4.4.4)
     zeitwerk (2.2.1)
 
 PLATFORMS
@@ -92,6 +100,7 @@ DEPENDENCIES
   html2text!
   htmlentities!
   http
+  pragmatic_segmenter!
   pry
   rake
   rspec

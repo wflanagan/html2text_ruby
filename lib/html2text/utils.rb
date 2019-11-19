@@ -6,6 +6,8 @@ module Html2Text
   # that is used in the Gem.
   module Utils
     DO_NOT_TOUCH_WHITESPACE = "<do-not-touch-whitespace>"
+    URI_REGEX = %r{((?:(?:[^ :/?#]+):)(?://(?:[^ /?#]*))(?:[^ ?#]*)(?:\?(?:[^ #]*))?(?:#(?:[^ ]*))?)}
+    HEADER_TAG = "__HEADER_START__"
 
     class << self
       # Originally, I added a bunch of text here to lookup the charset

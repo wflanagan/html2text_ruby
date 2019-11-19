@@ -2,7 +2,8 @@
 
 RSpec.describe Html2Text do
   context '.convert' do
-    let(:text) { ::Html2Text.convert(html) }
+    # This is set high to allow the HUGE MSOffice case go through
+    let(:text) { ::Html2Text.new(html: html, node_limit: 100_000).call }
 
     examples = Dir[File.dirname(__FILE__) + '/examples/*.html']
     examples.each do |filename|

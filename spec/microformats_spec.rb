@@ -6,10 +6,8 @@ RSpec.describe 'fixes' do
   context "reddit" do
     context "page" do
       let(:html) { load_file_from_fixture_path("html/reddit_page.html") }
-
-      it "parses with nice text" do
+      xit "parses with nice text" do
         parser
-        binding.pry
       end
     end
   end

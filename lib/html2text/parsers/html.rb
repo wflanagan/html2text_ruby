@@ -5,6 +5,8 @@ module Html2Text
     # Parses HTML and returns formatted raw text
     # for the supplied HTML
     class Html < Base
+      attr_reader :node_count
+
       def call
         text
       end
@@ -25,6 +27,8 @@ module Html2Text
       #
       # @return [String] text extracted from the HTML node.
       def iterate_over(node)
+        increment_node_count
+        return "" if node_count > node_limit
         return "\n" if node_kind?(node, 'br') && next_node_is_text?(node)
         return Html2Text::Utils.trimmed_whitespace(node.text) if node.text?
         return '' if non_printable_node?(node)
@@ -37,7 +41,9 @@ module Html2Text
         output = output.compact.join || ''
 
         if node_kind?(node, 'a')
-          output = Html2Text::Parsers::Html::ANode.new(node: node, input: output).call
+          output = Html2Text::Parsers::Html::ANode.new(node: node, input: output, format_links: include_links?).call
+        elsif node_kind?(node, 'button')
+          output = node.text
         elsif node_kind?(node, 'img')
           output = Html2Text::Parsers::Html::ImageNode.new(node: node).call
         end
@@ -50,17 +56,19 @@ module Html2Text
       #
       # @return [String] string whitespace
       def prefix_whitespace(node)
-        if node.name.downcase == 'div'
-          return '' if node.parent.name == 'div' && node_and_parent_same_text?(node)
+        if node_kind?(node, 'div')
+          return '' if node_kind?(node.parent, 'div') && node_and_parent_same_text?(node)
 
           "\n" # if it's not the above, then we return this
         else
-          Html2Text::Utils.prefix_whitespace_options[node.name.downcase]
+          str = Html2Text::Utils.prefix_whitespace_options[node.name.downcase]
+          str += Html2Text::Utils::HEADER_TAG if node_header_tag?(node)
+          str
         end
       end
 
       # Adds trailing whitepace before the node in passed as arguments
-      # base on configured parameters
+      # based on configured parameters
       #
       # @return [String] string whitespace
       def suffix_whitespace(node)
@@ -68,7 +76,9 @@ module Html2Text
         return "\n" if node_name == "br" && next_node_not_div_or_nil?(node)
         return "\n" if node_name == "div" && (next_node_is_text?(node) || next_node_not_div_or_nil?(node))
 
-        Html2Text::Utils.suffix_whitespace_options[node_name]
+        str = Html2Text::Utils.suffix_whitespace_options[node_name]
+        str += Html2Text::Utils::HEADER_TAG if node_header_tag?(node)
+        str
       end
 
       # The supplied HTML document
@@ -97,6 +107,48 @@ module Html2Text
       # and React-based pages
       def microformats
         @microformats ||= Html2Text::Parsers::Microformats.new(doc: doc, html: formatted_html, url: url)
+      end
+
+      # Container for the sentence parser
+      def sentences
+        @sentences ||= Html2Text::Parsers::Sentences.new(text: text, tagged_headings: tag_headers?)
+      end
+
+      # If there is a request to tag headers, then the sytsem will add these
+      # tags around the headers. This is to preserve them in later processing
+      #
+      # @return [Boolean] true or false
+      def tag_headers?
+        @tag_headers ||= args.dig(:tag_headings) || false
+      end
+
+      # If the node is a header, and the tag_headers is true, then
+      # this will be true
+      #
+      # @return [Boolean] true or false
+      def node_header_tag?(node)
+        tag_headers? && node_header?(node)
+      end
+
+      # If there is a request to include link formatting [text](https:// format),
+      # then the sytsem will add these tags around the a links.  It will just
+      # return the inner text if not.
+      #
+      # @return [Boolean] true or false
+      def include_links?
+        @include_links ||= args.dig(:include_links) || true
+      end
+
+      # Sets a maximum node limit for parsing HTML pages. Once we hit this limit
+      # we stop and return
+      def node_limit
+        @node_limit ||= args.dig(:node_limit) || 10_000
+      end
+
+      # Adds 1 to the node_count
+      def increment_node_count
+        @node_count = 0 if @node_count.nil?
+        @node_count += 1
       end
     end
   end

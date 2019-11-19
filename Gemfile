@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'htmlentities', github: "epicatization/htmlentities"
+gem 'pragmatic_segmenter',        github: 'omalab/pragmatic_segmenter'
 
 # Declare your gem's dependencies in whatever.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and

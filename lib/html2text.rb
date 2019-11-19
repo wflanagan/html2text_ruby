@@ -5,6 +5,7 @@ require 'chronic'
 require 'htmlentities'
 require 'json'
 require 'nokogiri'
+require 'pragmatic_segmenter'
 
 require 'html2text/version'
 require 'html2text/utils'
@@ -24,6 +25,7 @@ require 'html2text/parsers/html/image_node'
 require 'html2text/parsers/html/title'
 require 'html2text/parsers/html/description'
 require 'html2text/parsers/microformats'
+require 'html2text/parsers/sentences'
 
 # The main modulee for Html2Text. Wraps the parsers
 # and provides a convenicence .convert for backward
